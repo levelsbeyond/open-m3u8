@@ -1,5 +1,60 @@
 # Open M3U8 (working name)
 
+## Levels Beyond fork
+
+#### Background:  
+
+For Reach Engine 2.3.2 support has been added to stream Ad-hoc Live Events from HTTP Live Stream .m3u8 files.
+This work was done for Jira ticket "REACH-27323: As a live event consumer, I would like my live event to pull/set the start time of the live event from the m3u8 manifest."
+  
+In order for the live stream's start-time to displayed in the video player 
+the .m3u8 file must be parsed and the value from "EXT-X-PROGRAM-DATE-TIME" line returned to Reach Engine.
+Rather than a minimalist manual parse to pick out just that one start-time value we decided to use an open source parser library. 
+This approach enables future versions of Reach Engine to easily extract more information from the .m3u8 files.
+
+#### Changes to the code:
+
+- Added a Maven pom.xml file.
+- In `Constants.java` the MAX_COMPATIBILITY_VERSION was increased to "7" because Telestream outputs that version in their files. 
+- Added 2 sample .m3u8 files with EXT-X-PROGRAM-DATE-TIME specified and a test case: `MediaPlaylistParserStartTimeTest.java`
+- Commented out a unit test in `PlaylistParserWriterTest.java` that was failing.
+- In `build.gradle` the artifact group was changed to `com.levelsbeyond` and the version was changed to `0.2.7`. 
+
+#### Building the code with Maven:
+A Maven pom.xml was written to enable a regular build process. It has the Levels Beyond `<scm>` and `<repositories>` declarations copied from a Reach Engine pom.
+  
+#### Building the code with Gradle:
+An older version of Gradle, version 2.4 is required to build the open-3u8 library. On macOS older versions are installed with the SDKMAN tool. 
+Here is a good article describing how to do this:  
+<https://medium.com/@czerwinb/how-to-install-a-specific-gradle-version-on-your-mac-beab35051ee8>
+  
+Here are the command lines needed:
+```
+curl -s "https://get.sdkman.io" | bash
+cd ~/.sdkman/bin/
+chmod +x sdkman-init.sh
+source sdkman-init.sh
+  
+sdk list gradle
+sdk install gradle 2.4
+sdk use gradle 2.4
+sdk default gradle 2.4
+```
+
+#### Reach Engine release:
+For the initial release the `open-m3u8-0.2.7.jar` file must be manually uploaded to the Levels Beyond Artifactory repository. 
+Here is how it is declared as a dependency in the reach-engine-core module's pom.xml:
+
+```
+		<dependency>
+			<groupId>com.levelsbeyond</groupId>
+			<artifactId>open-m3u8</artifactId>
+			<version>0.2.7</version>
+		</dependency>
+```
+
+
+
 ## Description
 
 This is an open source M3U8 playlist parser and writer java library that attempts to conform to this specification:
