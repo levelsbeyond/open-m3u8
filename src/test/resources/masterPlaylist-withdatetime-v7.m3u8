@@ -1,0 +1,12 @@
+#EXTM3U
+#EXT-X-PROGRAM-DATE-TIME:2018-07-07T04:07:01.007Z
+#EXT-X-VERSION:7
+#EXT-X-START:TIME-OFFSET=-4.5,PRECISE=YES
+#EXT-X-TARGETDURATION:10
+#EXTINF:9.009,
+http://media.example.com/first.ts
+#EXTINF:9.009,
+http://media.example.com/second.ts
+#EXTINF:3.003,
+http://media.example.com/third.ts
+#EXT-X-ENDLIST
